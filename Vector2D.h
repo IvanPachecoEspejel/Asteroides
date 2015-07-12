@@ -13,13 +13,13 @@
 class Vector2D
 {
 	public:
-		Vector2D(float, float);
+		Vector2D(int, int);
 		Vector2D(void);
-		float getX();
-		float getY();
-		void setX(float x);
-		void setY(float y);
-		float length();
+		int getX();
+		int getY();
+		void setX(int x);
+		void setY(int y);
+		int length();
 		void normaliza();
 		SDL_Point punto();
 		
@@ -35,19 +35,19 @@ class Vector2D
 		}
 		
 		//Sobrecara para multiplicar un vector por un escalar
-		Vector2D operator*(float scalar){
+		Vector2D operator*(int scalar){
 			return Vector2D(m_x * scalar, m_y * scalar);
 		} 
 		
-		Vector2D& operator*=(float scalar){
+		Vector2D& operator*=(int scalar){
 			m_x *= scalar;
 			m_y *= scalar;
 			return *this;
 		}
 		
 	private:
-		float m_x;
-		float m_y;
+		int m_x;
+		int m_y;
 };
 
 #endif
