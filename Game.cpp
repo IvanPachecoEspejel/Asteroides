@@ -12,13 +12,27 @@
 
 using namespace std;
 
-Game :: Game(int n) : nAsteroides(n){}
+//Game :: Game(int n) : nAsteroides(n){}
+Game :: Game(){}
 
 Game :: ~Game(){}
 
 void Game :: init(const char* titulo, int xpos, int ypos, int alto, int ancho, int banderas){
 	int i;
-	
+	Uint32 rmask, gmask, bmask, amask;
+
+	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		rmask = 0xff000000;
+		gmask = 0x00ff0000;
+		bmask = 0x0000ff00;
+		amask = 0x000000ff;
+	#else
+		rmask = 0x000000ff;
+		gmask = 0x0000ff00;
+		bmask = 0x00ff0000;
+		amask = 0xff000000;
+	#endif
+
 	srand(time(NULL));
 	
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
@@ -46,32 +60,49 @@ void Game :: init(const char* titulo, int xpos, int ypos, int alto, int ancho, i
 		return;
 	}
 	
+	m_pSurface = SDL_CreateRGBSurface(0, ancho, alto, 32, rmask, gmask, bmask, amask);
+	if (m_pSurface == NULL){
+		cout << "SDL_CreateRGBSurface Error: " << SDL_GetError() << endl;
+		
+		m_bRunning = false;
+		return;
+	}
+	/*
 	for(i = 0 ; i < nAsteroides; i++){
 		asteroides.emplace_back(Asteroide());
 		asteroides[i].imprimeAsteroide();
 	}
+	*/
 	
+	for(i = 0; i < NUMERO_NAVES; i++){
+		std::cout << "iniciando..." <<std::endl;
+		naves.emplace_back(Nave(i));
+	}
 	
 	m_bRunning = true;
 	return;
 }
 
 void Game :: render(){
-	SDL_Point *pts;
-	int i;
+	//SDL_Point *pts;
+	//int i;
 		
-	SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 255);
+	m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, m_pSurface);
 	SDL_RenderClear(m_pRenderer);
-	SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
+	/*SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
 
 	for(i = 0 ; i < asteroides.size() ; i++){
 		SDL_RenderDrawLines(m_pRenderer, asteroides[i].puntos(), asteroides[i].numVertices() + 1);		
 	}
-	
+	*/
 	SDL_RenderPresent(m_pRenderer);
 }
 
 void Game :: update(){
+	
+	
+	/*
 	int i, j;
 	float distancia;
 	
@@ -99,7 +130,7 @@ void Game :: update(){
 					asteroides[nAsteroides - 1].imprimeAsteroide();
 				}
 			}
-	}
+	}// */
 }
 
 void Game::handleEvents(){
@@ -119,6 +150,8 @@ void Game::handleEvents(){
 void Game :: clean(){
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
+	SDL_FreeSurface(m_pSurface);
+	SDL_DestroyTexture(m_pTexture);
 	SDL_Quit();
 }
 

@@ -11,13 +11,17 @@
 #include <iostream>
 #include <vector>
 
-#include "Asteroide.h"
+//#include "Asteroide.h"
+#include "Nave.h"
+
+#define NUMERO_NAVES 4
 
 using namespace std;
 
 class Game{
 	public:
 		Game(int);
+		Game();
 		~Game();
 		void init(const char*, int, int, int, int, int);
 		void render();
@@ -28,11 +32,14 @@ class Game{
 		int anchoDisplay;
 		int altoDisplay;
 	private:
-		int nAsteroides;
-		vector<Asteroide> asteroides;
+		//int nAsteroides;
+		//Asteroide<vector> asteroides;
+		vector<Nave> naves;
 		bool m_bRunning;
 		SDL_Window* m_pWindow;
 		SDL_Renderer* m_pRenderer;
+		SDL_Surface* m_pSurface;
+		SDL_Texture* m_pTexture;
 };
 
 #endif

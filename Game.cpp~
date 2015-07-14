@@ -88,11 +88,11 @@ void Game :: update(){
 								 pow(asteroides[i].getCentro().getY() - asteroides[j].getCentro().getY(), 2));
 				if(distancia < (asteroides[i].getRadio() + asteroides[j].getRadio())){
 					if(asteroides[i].getRadio() < asteroides[j].getRadio()){
-						asteroides[j].setVelocidad(asteroides[i].getVelocidad() + asteroides[j].getVelocidad());
+						asteroides[j].setVelocidad((asteroides[i].getVelocidad() * 0.5)+ asteroides[j].getVelocidad());
 						asteroides.erase(asteroides.begin() + i);
 					}
 					else{
-						asteroides[i].setVelocidad(asteroides[i].getVelocidad() + asteroides[j].getVelocidad());
+						asteroides[i].setVelocidad((asteroides[i].getVelocidad() * 0.5) + asteroides[j].getVelocidad());
 						asteroides.erase(asteroides.begin() + j);
 					}
 					asteroides.emplace_back(Asteroide());
@@ -112,7 +112,7 @@ void Game::handleEvents(){
 				break;
 			default:
 				break;
-		}
+		}k
 	}
 }
 
